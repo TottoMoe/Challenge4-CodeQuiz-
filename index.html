@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Code Quiz</title>
+</head>
+<body>
+  <!-- main outer div -->
+  <div class="outer-container">
+
+    <!-- top-bar section -->
+    <div class="top-bar">
+      <a href="./highscores.html">View high scores</a>
+    </div>
+    
+    <!-- inver div -->
+    <div class="inner-container">
+      
+      <!-- main header/quiz intro -->
+      <header class="quiz-intro">
+        <h1 id="introTitle"></h1>
+        <p id="introPara">Try to answer the following code-related questions within the time limit.
+           Keep in mind that incorrect answers will denalize your score time by ten seconds!</p>
+        <button id="startBtn">Start Quiz!</button> 
+      </header>
+      
+      <!-- main quiz content -->
+      <section>
+        <div class="quizText">
+          <div class="timer">
+            <!-- <div id="time_text">Time: </div> -->
+            <div id="time_sec">0</div>
+          </div>
+          <!-- Inserted questiond from JavaScript -->
+          <div id="questions"></div>
+          
+          <div class="optionList">
+            <!-- Inserted options from JavaScript -->
+            <button class="choice" id="A" onclick="checkAnswer('A')"></button>
+            <button class="choice" id="B" onclick="checkAnswer('B')"></button>
+            <button class="choice" id="C" onclick="checkAnswer('C')"></button>
+            <button class="choice" id="D" onclick="checkAnswer('D')"></button>
+          </div>
+          <!-- <div id="progress"></div> -->
+        </div>
+        
+        <div class="answerText">
+          <!-- Inserted answers from JavaScript -->
+        </div>
+      </section>
+      
+
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
