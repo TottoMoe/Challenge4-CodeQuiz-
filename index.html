@@ -23,7 +23,7 @@
       <header class="quiz-intro">
         <h1 id="introTitle"></h1>
         <p id="introPara">Try to answer the following code-related questions within the time limit.
-           Keep in mind that incorrect answers will denalize your score time by ten seconds!</p>
+           Keep in mind that incorrect answers will penalize your score time by ten seconds!</p>
         <button id="startBtn">Start Quiz!</button> 
       </header>
       
@@ -31,7 +31,6 @@
       <section>
         <div class="quizText">
           <div class="timer">
-            <!-- <div id="time_text">Time: </div> -->
             <div id="time_sec">0</div>
           </div>
           <!-- Inserted questiond from JavaScript -->
@@ -52,6 +51,22 @@
         </div>
       </section>
       
+      <section>
+        <div class="finalPage" style="display: none;">
+        
+          <h1 id="finalHeader">All Done!</h1>
+          <div id="finalText">Your final score is 22</div>
+          <form id="user-form">
+            <label>Enter Initials:</label>
+            <input type="text" id="initial" name="initial" >
+            <input type="submit" id="submit-btn" value="submit">
+          </form>
+
+          <ul id="user-list"></ul>
+          
+          <button class="restart-btn">Go back</button>
+        </div>
+      </section>
 
     </div>
   </div>

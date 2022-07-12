@@ -9,10 +9,13 @@ var choiceB = $('#B');
 var choiceC = $('#C');
 var choiceD = $('#D');
 var answerEl = $('.answerText');
-
-// var progress = $('#progress');
+var finalPageShowed = $('.finalPage');
+var userFormEL = $('#user-form');
+var userListEl = $('#user-list');
+var restartBtn = $('.restart-btn');
 
 var isPaused = false;
+var timeValue = 30;
 var counter;
 var score = 0;
 var runningQuestion = 0;
@@ -71,7 +74,27 @@ function renderQuestion() {
   choiceB.text(q.choiceB);
   choiceC.text(q.choiceC);
   choiceD.text(q.choiceD);
-  // clickCount++;
+  
+}
+
+timerEl.text("Time: " + 0);
+
+function startTime(time) {
+  if (!isPaused) {
+    timerEl.text("Time: " + time);
+    counter = setInterval(timer, 1000);
+    function timer() {
+      time--;
+      timerEl.text("Time: " + time);
+      if (time < 0) {
+        clearInterval(counter);
+        timerEl.text("Time: " + 0);
+        clearQuiz();
+      }
+    }
+  } else {
+    clearInterval(counter);
+  }
 }
 
 function checkAnswer(answer) {
@@ -86,67 +109,25 @@ function checkAnswer(answer) {
     runningQuestion++;
     renderQuestion();
     qCount--;
-    clearInterval(counter);
     // startTime(timeValue);
   } else {
+    // clearInterval(counter);
+    isPaused = true;
     console.log(runningQuestion, lastQuestion, qCount, clickCount);
-    // clearInterval(timerInterval);
-    // clearQuiz();
+    clearQuiz();
   }
 }
 
 introTitleEl.text('Coding Quiz Challenge');
-timerEl.text("Time: " + 0);
 
 startBtn.on('click', function() {
   clearIntro();
-  startTime(10);
+  startTime(timeValue);
   renderQuestion();
 });
 
-// set Timer
-function startTime(time) {
-  timerEl.text("Time: " + time);
-  counter = setInterval(timer, 1000);
-  function timer() {
-    time--;
-    timerEl.text("Time: " + time);
-    if (time < 0) {
-      clearInterval(counter);
-      timerEl.text("Time: " + 0);
-      clearQuiz();
-    }
-  }
-
-  
-  
-  // function finalPage()
-  // timerEl.text("Time: " + secondsLeft);
-
-  // var timerInterval = setInterval(function() {
-  //   if (!isPaused) {
-  //     secondsLeft--;
-  //     timerEl.text("Time: " + secondsLeft);
-  //   } 
-
-  //   if(isPaused === true  || secondsLeft <= 0) {
-  //     clearInterval(timerInterval);
-  //     // timerEl.pause();
-  //     if (secondsLeft <= 0) {
-  //       timerEl.text("Time: " + 0);
-  //     }
-  //     clearQuiz();
-  //   }
-  //   //final page
-  // }, 1000);
-
-}
-
-
-
 // Clear quiz intro page
 function clearIntro() {
-  // console.log("button");
   introTitleEl.text('');
   introEl.text('');
   startBtn.hide();
@@ -156,27 +137,24 @@ function clearQuiz() {
   questionEl.text('');
   optionListEl.text('');
   answerEl.text('');
+  finalPageShowed.css("display", "block");
 }
 
-// var interval = new IntervalTimer(console.log('aaa'), 3000);
-// interval.start();
-// interval.pause();
-// interval.resume();
-// interval.clear();
+function userInput(e) {
+  e.preventDefault();
+  var userInputList = $('input[name="initial"]').val();
+  
+  if(!userInputList) {
+    console.log("no user list");
+    return;
+  }
 
-// function renderProgress() {
-//   console.log(qIndex,qCount);
+  userListEl.append('<li>' + userInputList + '</li>');
+  
+  $('input[name="initial"]').val('');
+}
+userFormEL.on('submit', userInput);
 
-//   while (qIndex <= lastQuestion) {
-//     progress.innerHTML += "<div class='prog' id=" + qIndex +"></div>";
-//     qIndex++;
-//     qCount--;
-//   }
-//   // console.log(qIndex,qCount);
-//   // if (qCount === 0) {
-//   //   console.log("last questions");
-//   // }
-//   // if (qIndex === lastQuestion && secondsLeft > 0) {
-    
-//   // }
-// }
+restartBtn.on('click', function() {
+  window.location.reload();
+})
