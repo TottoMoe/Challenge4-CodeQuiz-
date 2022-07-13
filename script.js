@@ -10,13 +10,14 @@ var choiceC = $('#C');
 var choiceD = $('#D');
 var answerEl = $('.answerText');
 var finalPageShowed = $('.finalPage');
+var finalScore = $('#finalText');
 var userFormEL = $('#user-form');
 var userListEl = $('#user-list');
 var restartBtn = $('.restart-btn');
 
 var isPaused = false;
-var timeValue = 30;
-var counter;
+var setTime;
+var count = 70;
 var score = 0;
 var runningQuestion = 0;
 var questions = [
@@ -66,6 +67,39 @@ var qIndex = 0;
 var qCount = questions.length;
 var clickCount = 0;
 
+const resetCount = () => {
+  count = 0;
+}
+
+const subCount = () =>{
+  count = count - 10;
+}
+
+const addCount = () => {
+  count++
+}
+
+const resetTimer = () => {
+  clearInterval(setTime);
+  resetCount();
+}
+
+const startTimer = () => {
+  setTime = setInterval(displayCount, 1000);
+}
+
+timerEl.text("Time: " + 0);
+
+function displayCount() {
+  timerEl.text("Time: " + count);
+  count--;
+  if (count < 0) {
+    resetTimer();
+    timerEl.text("Time: " + 0);
+    clearQuiz();
+  }
+}
+
 function renderQuestion() {
   var q = questions[runningQuestion];
 
@@ -77,43 +111,21 @@ function renderQuestion() {
   
 }
 
-timerEl.text("Time: " + 0);
-
-function startTime(time) {
-  if (!isPaused) {
-    timerEl.text("Time: " + time);
-    counter = setInterval(timer, 1000);
-    function timer() {
-      time--;
-      timerEl.text("Time: " + time);
-      if (time < 0) {
-        clearInterval(counter);
-        timerEl.text("Time: " + 0);
-        clearQuiz();
-      }
-    }
-  } else {
-    clearInterval(counter);
-  }
-}
-
 function checkAnswer(answer) {
   if (answer == questions[runningQuestion].correct) {
     answerEl.text('Correct!');
   } else {
     answerEl.text('Wrong!');
-    counter = counter - 10;
+    subCount();
   }
 
   if (runningQuestion < lastQuestion) {
     runningQuestion++;
     renderQuestion();
     qCount--;
-    // startTime(timeValue);
+    
   } else {
-    // clearInterval(counter);
-    isPaused = true;
-    console.log(runningQuestion, lastQuestion, qCount, clickCount);
+    clearInterval(setTime);
     clearQuiz();
   }
 }
@@ -122,7 +134,7 @@ introTitleEl.text('Coding Quiz Challenge');
 
 startBtn.on('click', function() {
   clearIntro();
-  startTime(timeValue);
+  startTimer(count);
   renderQuestion();
 });
 
@@ -138,6 +150,8 @@ function clearQuiz() {
   optionListEl.text('');
   answerEl.text('');
   finalPageShowed.css("display", "block");
+  count++;
+  finalScore.text("Your final score is " + count);
 }
 
 function userInput(e) {
@@ -145,13 +159,14 @@ function userInput(e) {
   var userInputList = $('input[name="initial"]').val();
   
   if(!userInputList) {
-    console.log("no user list");
     return;
   }
 
   userListEl.append('<li>' + userInputList + '</li>');
   
   $('input[name="initial"]').val('');
+
+  localStorage.setItem("names", JSON.stringify(userInputList));
 }
 userFormEL.on('submit', userInput);
 
